@@ -1,5 +1,7 @@
 const express = require(`express`);
+const { verify } = require("jsonwebtoken");
 const userController = require(`../controlers/user`);
+const { asyncHandler } = require("../middlewares/auth");
 const router = express.Router();
 /**
  * @openapi
@@ -7,7 +9,6 @@ const router = express.Router();
  *  name: User
  *  description: APIs for the user
  */
-
 
 /**
  * @swagger
@@ -20,7 +21,7 @@ const router = express.Router();
  *        - email
  *        - password
  *      properties:
- *        name:
+ *        full_name:
  *          type: string
  *          description: Every user must provide a name
  *        email:
@@ -30,9 +31,9 @@ const router = express.Router();
  *          type: string
  *          description: Also provide your password.
  *      example:
- *        name: Me
+ *        full_name: Noella
  *        email: me@gmail.com
- *        password: me123
+ *        password: Me1234
  */
 
 /**
@@ -69,14 +70,13 @@ const router = express.Router();
  *                  type: string
  *                  description: password required.
  *          example:
- *            email: example@gmail.com
- *            password: exapmle123
+ *            email: me@gmail.com
+ *            password: Me1234
  */
-
 
 /**
  * @swagger
- * /user/register:
+ * /users/signup:
  *  post:
  *    summary: A user can make registration
  *    description: both name, email and password must be provided
@@ -88,7 +88,7 @@ const router = express.Router();
  *        application/json:
  *         schema:
  *            $ref: '#/components/schemas/User'
- *    
+ *
  *    responses:
  *      200:
  *        description: Successfully registered.
@@ -96,7 +96,7 @@ const router = express.Router();
  *          application/json:
  *           schema:
  *           $ref: '#/components/schemas/User'
- *         
+ *
  *      400:
  *        description: Invalid input or Bad formated input
  *        content:
@@ -110,10 +110,10 @@ const router = express.Router();
  *                  type: number
  */
 
-router.post(`/signup`, userController.userController);
+router.post(`/signup`, asyncHandler(userController.userController));
 /**
  * @swagger
- * /user/login:
+ * /users/login:
  *  post:
  *    summary: A user must sign-in with his/her credentials
  *    description: A user must provide a valid email and password to login
@@ -134,15 +134,14 @@ router.post(`/signup`, userController.userController);
  *        description: Email is not found!
  */
 
-router.post(`/login`, userController.userloginController)
-router.get(`/user`, userController.getusers);
+router.post(`/login`, asyncHandler(userController.userloginController));
+router.get(`/user`, verify, asyncHandler(userController.getusers));
 
-
-router.get(`/:_id`, userController.getuser);
+router.get(`/:_id`, verify, asyncHandler(userController.getuser));
 
 /**
  * @swagger
- * /user/{id}:
+ * /users/{id}:
  *  put:
  *    security:
  *      - Token: []
@@ -152,7 +151,7 @@ router.get(`/:_id`, userController.getuser);
  *      - User
  *    parameters:
  *      - in: path
- *        name: id
+ *        name: _id
  *        required: true
  *        description: use a Valid Id
  *        schema:
@@ -163,14 +162,8 @@ router.get(`/:_id`, userController.getuser);
  *      500:
  *        description: Internal error!
  */
-router.put(`/:_id`, userController.updateUser);
+router.put(`/:_id`, verify, asyncHandler(userController.updateUser));
 
-router.delete(`/:_id`, userController.deleteUser);
+router.delete(`/:_id`, verify, asyncHandler(userController.deleteUser));
 
-
-
-
-
-
-
-module.exports = router
+module.exports = router;
