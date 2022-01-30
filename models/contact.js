@@ -15,6 +15,11 @@ const infoSchema = new Schema({
     min: 6,
     max: 255
   },
+  phone : {
+    type: String,
+    require: true,
+    min: 10
+  },
   message :{
     type: String,
     require: true,

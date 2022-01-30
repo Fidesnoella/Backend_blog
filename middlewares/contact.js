@@ -9,6 +9,9 @@ const contactValidation = data =>{
         "string.min":"minimum 4 character required"}),
         email : Joi.string().required().email().pattern(new RegExp(/^[^ ]+@[^ ]+\.[a-z]{2,3}$/))
         .message({"string.pattern.base":"Invalid email"}),
+        phone: Joi.string().min(10).required().pattern(new RegExp(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/))
+        .message({"string.pattern.base":"Phone can not contain character",
+        "string.min":"minimum 10 character required"}),
         message: Joi.string().min(5).required()        
      }); 
        
