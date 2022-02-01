@@ -9,7 +9,6 @@ const articleSchema = new Schema(
       require: true,
       min: 4,
       max: 255,
-      unique: true,
     },
     description: {
       type: String,

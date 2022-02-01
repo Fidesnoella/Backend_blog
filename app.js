@@ -2,8 +2,9 @@ const express = require(`express`);
 const mongoose = require(`mongoose`);
 const dotenv = require(`dotenv`);
 const contactRoute = require("./routes/contact");
-
+const postRoutes = require(`./routes/posts`);
 const articleRoute = require(`./routes/article`);
+const adminRoute = require(`./routes/admin`);
 const userRoute = require(`./routes/user`);
 const cookieParser = require(`cookie-parser`);
 const bodyParser = require("body-parser");
@@ -53,6 +54,8 @@ app.use(`/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(`/users`, userRoute);
 app.use(`/articles`, articleRoute);
 app.use(`/contact`, contactRoute);
+app.use(`/article`, postRoutes);
+app.use(`/admin`, adminRoute);
 
 let template = `
 <body style="display: flex; justify-content: center; align-items: center; flex-direction: column;  font-family: "lexend";
@@ -81,7 +84,7 @@ app.use(errLogger);
 
 const dbURI = process.env.MONGODB_URI;
 mongoose
-  .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) => {
     console.log(`connected to db`);
     module.exports = app.listen(PORT, () =>

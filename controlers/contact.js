@@ -8,11 +8,12 @@ const contactInfoController = async (req, res) =>{
      const{error} = contactValidation(req.body);
 if (error) return res.status(400).send(error.details[0].message);
 
-  const {full_name, email, message} = req.body;
+  const {full_name, email,phone, message} = req.body;
   try {
       const newInfo = new contactInfo ({
           full_name,
           email,
+          phone,
           message
       })
      const saveInfo = await newInfo.save()
@@ -48,12 +49,12 @@ const updateContactInfo = async (req, res) =>{
       const{error} = contactValidation(req.body);
 if (error) return res.status(400).send(error.details[0].message);
 
-  const {full_name, email, message} = req.body;
+  const {full_name, email, phone, message} = req.body;
   try{
     const{_id} = req.params
     if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(400).json({err: `Invalid id`})
   
-    const updatedContactInfo = await contactInfo.updateOne({_id}, {$set: {full_name, email, message}}, {new:true})
+    const updatedContactInfo = await contactInfo.updateOne({_id}, {$set: {full_name, email, phone, message}}, {new:true})
     res.status(200).json({message: `ContactInformation updated successfully`, updatedContactInfo})
   
   }catch (error){

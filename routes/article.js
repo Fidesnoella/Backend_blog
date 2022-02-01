@@ -31,10 +31,10 @@ const {asyncHandler} = require("../middlewares/auth")
  *        body: This is content of my post
  */
 
-router.post("/", verify, asyncHandler(articleController.articleController));
+router.post("/",verify, asyncHandler(articleController.articleController));
 
-router.get("/", asyncHandler(articleController.getArticles));
-router.get("/:id",asyncHandler (articleController.getArticle));
+router.get("/",verify,  asyncHandler(articleController.getArticles));
+router.get("/:id",verify, asyncHandler (articleController.getArticle));
 router.put("/:id", verify, asyncHandler(articleController.updateArticle));
 router.delete("/:id", verify, asyncHandler(articleController.deleteArticle));
 
