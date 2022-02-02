@@ -3,7 +3,6 @@ const mongoose = require(`mongoose`);
 const dotenv = require(`dotenv`);
 const contactRoute = require("./routes/contact");
 const postRoutes = require(`./routes/posts`);
-const articleRoute = require(`./routes/article`);
 const adminRoute = require(`./routes/admin`);
 const userRoute = require(`./routes/user`);
 const cookieParser = require(`cookie-parser`);
@@ -52,7 +51,6 @@ app.use(`/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Route Mildwares
 app.use(`/users`, userRoute);
-app.use(`/articles`, articleRoute);
 app.use(`/contact`, contactRoute);
 app.use(`/article`, postRoutes);
 app.use(`/admin`, adminRoute);

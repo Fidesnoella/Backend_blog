@@ -106,10 +106,10 @@ const userloginController = async (req, res) => {
     return res.status(400).json({ message: "Invalid credentilas" });
 
   //  create and assign token
-  const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
-    expiresIn: "1h",
-  });
-  res.status(200).json({ token });
+  // const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
+  //   expiresIn: "1h",
+  // });
+  // res.status(200).json({ token });
 };
 
 module.exports = {

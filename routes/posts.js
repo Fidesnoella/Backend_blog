@@ -1,13 +1,14 @@
 const express = require(`express`);
-const { verify } = require("jsonwebtoken");
-
+// const { verify } = require("jsonwebtoken");
+const verify = require(`../routes/verifyToken`);
+const {asyncHandler} = require("../middlewares/auth")
 const router = express.Router();
 
 // Posta model
 const Articles = require(`../models/Posts`);
 
 // Get all article
-router.get(`/`,verify, async (req, res) =>{
+router.get(`/`,async (req, res) =>{
     try {
         const articles = await Articles.find();
         if(!articles) throw Error(`No Items`);
@@ -18,7 +19,7 @@ router.get(`/`,verify, async (req, res) =>{
 })
 
 // Get an article
-router.get(`/:id`,verify, async (req, res) =>{
+router.get(`/:id`,async (req, res) =>{
     try {
         const article = await Articles.findById(req.params.id);
         if(!article) throw Error(`No Items`);
@@ -29,7 +30,7 @@ router.get(`/:id`,verify, async (req, res) =>{
 })
 
 // Post an article
-router.post(`/`,verify, async (req, res) =>{
+router.post(`/`, async (req, res) =>{
   const newArticle= new Articles(req.body);
  try{
  const article = await newArticle.save();
@@ -42,7 +43,7 @@ res.status(400).json({msg: err})
 });
    
 //Delete an article
-router.delete(`/:id`,verify, async (req, res) =>{
+router.delete(`/:id`,async (req, res) =>{
     try {
         const article = await Articles.findByIdAndDelete(req.params.id);
         if(!article) throw Error(`No Article found`);
@@ -54,7 +55,7 @@ router.delete(`/:id`,verify, async (req, res) =>{
 
 
 //Update an article
-router.patch(`/:id`,verify, async (req, res) =>{
+router.patch(`/:id`,async (req, res) =>{
     try {
         const article = await Articles.findByIdAndUpdate(req.params.id, req.body);
         if(!article) throw Error(`Something went wrong`);
